@@ -1,0 +1,43 @@
+@import '../../../style/variables';
+
+.user-list {
+  list-style-type: none;
+  padding: 0;
+
+  li {
+    border-bottom: 2px solid #ccc;
+    padding: 10px 0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+
+    .additional-info {
+      margin-top: 10px;
+
+      h4 {
+        margin: 5px 0;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+
+        li {
+          margin-bottom: 5px;
+          border-bottom: 1px dashed #ccc;
+          padding-bottom: 5px;
+
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+  }
+}

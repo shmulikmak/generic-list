@@ -1,0 +1,28 @@
+<h2>Users</h2>
+<ul class="user-list">
+  <li *ngFor="let user of users$ | async">
+    <div class="user-info">
+      <div class="user-detail"><strong>Name: </strong>{{ user.name }}</div>
+      <div class="user-detail"><strong>Email: </strong><a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
+      <div class="user-detail"><strong>Website: </strong><a href="http://{{ user.website }}" target="_blank">{{ user.website }}</a></div>
+      <div class="user-detail"><strong>Phone: </strong>☎️ {{ user.phone }}</div>
+      <div class="user-detail">
+        <strong>Address: </strong>
+        <a href="https://www.google.com/maps/search/?api=1&query={{ user.address.geo.lat }},{{ user.address.geo.lng }}" target="_blank">Map</a>
+      </div>
+      <div class="additional-info">
+        <h4>Favorite Restaurants:</h4>
+        <ul>
+          <li *ngFor="let restaurant of user.favoriteRestaurants">
+            {{ restaurant.name }} -
+            <a href="https://www.google.com/maps/search/?api=1&query={{ restaurant.location.lat}},{{ restaurant.location.lng }}" target="_blank">Location</a>
+          </li>
+        </ul>
+        <h4>Other Phones:</h4>
+        <ul>
+          <li *ngFor="let phone of user.otherPhones">{{ phone }}</li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</ul>
