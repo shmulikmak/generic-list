@@ -13,10 +13,4 @@ export class UsersComponent {
   users$: Observable<User[]> = this.userService.getUsers();
 
   constructor(private userService: UserService) {}
-
-  // ngOnInit(): void {
-  //   this.userService.getUsers().subscribe((users) => {
-  //     this.users = users;
-  //   });
-  // }
 }
