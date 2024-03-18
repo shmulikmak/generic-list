@@ -38,6 +38,3 @@ This project demonstrates a simple backend+frontend infrastructure to render a g
     ```bash
     npm start
     ```
-
-Contributing
-Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
