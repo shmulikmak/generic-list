@@ -3,9 +3,11 @@ import cors from '@fastify/cors';
 import dotenv from 'dotenv';
 
 import dataRoute from './routes/dataRoute';
+import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config();
 const fastify = Fastify({ logger: true });
+fastify.setErrorHandler(errorHandler);
 
 fastify.register(cors);
 fastify.register(dataRoute);
