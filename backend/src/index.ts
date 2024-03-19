@@ -2,15 +2,13 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import dotenv from 'dotenv';
 
-import usersRoute from './routes/usersRoute';
-import photosRoute from './routes/photosRoute';
+import dataRoute from './routes/dataRoute';
 
 dotenv.config();
 const fastify = Fastify({ logger: true });
 
 fastify.register(cors);
-fastify.register(usersRoute);
-fastify.register(photosRoute);
+fastify.register(dataRoute);
 
 const start = async () => {
   const port = parseInt(process.env.PORT || '3001');

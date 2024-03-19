@@ -1,5 +1,8 @@
 export const config = {
-    USERS_API_URL: process.env.USERS_API_URL || 'https://jsonplaceholder.typicode.com/users',
-    PHOTOS_API_URL: process.env.PHOTOS_API_URL || 'https://jsonplaceholder.typicode.com/photos'
-  };
-  
+  BASE_URL: process.env.API_BASE_URL || 'https://jsonplaceholder.typicode.com/',
+  ENDPOINTS: {
+    users: 'users',
+    photos: 'photos',
+    // Add more endpoints as needed
+  },
+};
