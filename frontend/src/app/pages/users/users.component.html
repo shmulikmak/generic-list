@@ -1,28 +1,40 @@
-<h2>Users</h2>
-<ul class="user-list">
-  <li *ngFor="let user of users$ | async">
-    <div class="user-info">
-      <div class="user-detail"><strong>Name: </strong>{{ user.name }}</div>
-      <div class="user-detail"><strong>Email: </strong><a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
-      <div class="user-detail"><strong>Website: </strong><a href="http://{{ user.website }}" target="_blank">{{ user.website }}</a></div>
-      <div class="user-detail"><strong>Phone: </strong>☎️ {{ user.phone }}</div>
-      <div class="user-detail">
-        <strong>Address: </strong>
-        <a href="https://www.google.com/maps/search/?api=1&query={{ user.address.geo.lat }},{{ user.address.geo.lng }}" target="_blank">Map</a>
+<div *ngFor="let user of users">
+  <div class="user-card">
+    <ng-container *ngFor="let key of userKeys">
+      <div class="user-field">
+        <span class="field-label">{{ key }}:</span>
+        <ng-container [ngSwitch]="schema.items.properties[key].type">
+          <a *ngSwitchCase="'email'" href="mailto:{{ user[key] }}">{{ user[key] }}</a>
+          <a *ngSwitchCase="'website'" href="{{ user[key] }}" target="_blank">{{ user[key] }}</a>
+          <span *ngSwitchDefault>{{ user[key] }}</span>
+          <ng-container *ngSwitchCase="'object'">
+            <ng-container *ngIf="key === 'address'">
+              <!-- replace YOUR_API_KEY with your google api key to show the map box -->
+              <!-- <iframe
+                width="300"
+                height="200"
+                frameborder="0" style="border:0"
+                src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q={{ restaurant.location.lat }},{{ restaurant.location.lng }}"
+                allowfullscreen>
+              </iframe> -->
+              <a href="https://www.google.com/maps/search/?api=1&query={{ user[key].geo.lat }},{{ user[key].geo.lng }}" target="_blank">Map</a>
+            </ng-container>
+          </ng-container>
+          <div *ngSwitchCase="'array'">
+            <ng-container *ngIf="key === 'favoriteRestaurants'">
+              <div *ngFor="let restaurant of user[key]">
+                {{ restaurant.name }}
+                <a href="https://www.google.com/maps/search/?api=1&query={{ restaurant.location.lat }},{{ restaurant.location.lng }}" target="_blank">Location</a>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="key === 'otherPhones'">
+              <span *ngFor="let phone of user[key]; let last = last">
+                {{ phone }}<span *ngIf="!last">, </span>
+              </span>
+            </ng-container>
+          </div>
+        </ng-container>
       </div>
-      <div class="additional-info">
-        <h4>Favorite Restaurants:</h4>
-        <ul>
-          <li *ngFor="let restaurant of user.favoriteRestaurants">
-            {{ restaurant.name }} -
-            <a href="https://www.google.com/maps/search/?api=1&query={{ restaurant.location.lat}},{{ restaurant.location.lng }}" target="_blank">Location</a>
-          </li>
-        </ul>
-        <h4>Other Phones:</h4>
-        <ul>
-          <li *ngFor="let phone of user.otherPhones">{{ phone }}</li>
-        </ul>
-      </div>
-    </div>
-  </li>
-</ul>
+    </ng-container>
+  </div>
+</div>

@@ -1,53 +1,23 @@
-import { catchError, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { PhotoService } from '../../services/photo.service';
-import { Photo } from '../../models/photo.model';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-photos',
   templateUrl: './photos.component.html',
-  styleUrls: ['./photos.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./photos.component.scss']
 })
-export class PhotosComponent implements OnInit, OnDestroy {
-  allPhotos: Photo[] = [];
-  displayedPhotos: Photo[] = [];
-  batchSize: number = 10;
-  currentBatchIndex: number = 0;
-  private unsubscribe$ = new Subject<void>();
+export class PhotosComponent implements OnInit {
+  photos: any[] = [];
+  schema: any;
+  photoKeys: string[] = [];
 
-  constructor(private photoService: PhotoService, private cdr: ChangeDetectorRef) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.photoService.getPhotos().pipe(
-      catchError((error) => {
-        console.error('Error occurred while fetching photos:', error);
-        
-        return [];
-      }),
-      takeUntil(this.unsubscribe$)
-    ).subscribe((photos: Photo[]) => {
-      this.allPhotos = photos;
-      this.displayedPhotos = this.getNextBatch();
-      this.cdr.markForCheck();
+    this.dataService.getItems('photos').subscribe(response => {
+      this.photos = response.data;
+      this.schema = response.schema;
+      this.photoKeys = Object.keys(this.schema?.items?.properties);
     });
-  }
-  
-  loadMorePhotos(): void {
-    this.displayedPhotos = [...this.displayedPhotos, ...this.getNextBatch()];
-    this.cdr.markForCheck();
-  }  
-  
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-  private getNextBatch(): Photo[] {
-    const nextBatch = this.allPhotos.slice(this.currentBatchIndex, this.currentBatchIndex + this.batchSize);
-    this.currentBatchIndex += this.batchSize;
-    
-    return nextBatch;
   }
 }

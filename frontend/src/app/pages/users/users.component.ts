@@ -1,16 +1,27 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./users.component.scss']
 })
-export class UsersComponent {
-  users$: Observable<User[]> = this.userService.getUsers();
+export class UsersComponent implements OnInit {
+  users: any[] = [];
+  schema: any;
+  userKeys: string[] = [];
 
-  constructor(private userService: UserService) {}
+  constructor(private dataService: DataService) { }
+
+  ngOnInit(): void {
+    this.dataService.getItems('users').subscribe(response => {
+      this.users = response.data;
+      this.schema = response.schema;
+      this.userKeys = Object.keys(this.schema?.items?.properties);
+    });
+  }
+
+  getObjectKeys(obj: any): string[] {
+    return Object.keys(obj);
+  }
 }
