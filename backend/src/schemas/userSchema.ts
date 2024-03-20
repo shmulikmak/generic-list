@@ -17,8 +17,8 @@ export const userSchema = {
           },
         },
       },
-      phone: { type: "string" },
-      website: { type: "website" },
+      phone: { type: "phone" },
+      website: { type: "link" },
       favoriteRestaurants: {
         type: "array",
         items: {

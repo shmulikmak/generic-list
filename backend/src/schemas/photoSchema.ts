@@ -3,8 +3,8 @@ export const photoSchema = {
   items: {
     properties: {
       title: { type: "string" },
-      url: { type: "string" },
-      thumbnailUrl: { type: "string" },
+      url: { type: "link" },
+      thumbnailUrl: { type: "thumbnailUrl" },
     },
     required: ["title", "url", "thumbnailUrl"],
   },
