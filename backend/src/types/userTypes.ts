@@ -12,5 +12,5 @@ export interface User extends ListItem {
 
 export interface Restaurant {
   name: string;
-  location: { lat: number; lng: number };;
+  location: { lat: number; lng: number };
 }

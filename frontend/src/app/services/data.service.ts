@@ -16,4 +16,12 @@ export class DataService {
   getItems(type: DataType): Observable<{ data: User[] | Photo[], schema: any }> {
     return this.http.get<{ data: User[] | Photo[], schema: any }>(`${config.BASE_URL}?type=${type}`);
   }
+
+  searchItems(type: DataType, term: string): Observable<{ data: User[] | Photo[], schema: any }> {
+    return this.http.get<{ data: User[] | Photo[], schema: any }>(`${config.BASE_URL}?type=${type}&search=${term}`);
+  }
+  
+  getItem(type: string, id: string): Observable<any> {
+    return this.http.get<any>(`${config.BASE_URL}?type=${type}&id=${id}`);
+  }
 }

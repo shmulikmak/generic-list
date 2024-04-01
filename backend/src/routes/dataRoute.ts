@@ -11,6 +11,8 @@ const dataRoute: FastifyPluginAsync = async (fastify: FastifyInstance) => {
           type: "object",
           properties: {
             type: { type: "string", enum: ["users", "photos"] },
+            search: { type: "string" },
+            id: { type: "string" }
           },
           required: ["type"],
         },

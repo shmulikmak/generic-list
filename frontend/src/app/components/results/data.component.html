@@ -1,5 +1,9 @@
-<div *ngFor="let item of data">
-    <div class="card">
+<input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" (keydown)="onKeyDown($event)" placeholder="Search...">
+
+<!--      (click)="onSelectItem(item)"  if I want the card will be clicked-->
+<div *ngFor="let item of data; let i = index" 
+     [class.selected]="i === selectedIndex">
+     <div class="card">
       <ng-container *ngFor="let key of dataKeys">
         <div class="field">
           <span class="field-label">{{ key }}: </span>
@@ -39,5 +43,4 @@
         </div>
       </ng-container>
     </div>
-  </div>
-  
+</div>
