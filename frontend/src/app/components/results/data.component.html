@@ -1,46 +1,53 @@
-<input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" (keydown)="onKeyDown($event)" placeholder="Search...">
+<div class="search-container">
+  <input type="text"
+    placeholder="Search..."
+    [(ngModel)]="searchTerm"
+    (input)="onSearch()"
+    (keydown)="onKeyDown($event)"
+    (keydown.arrowup)="$event.preventDefault()"
+    (keydown.arrowdown)="$event.preventDefault()">
 
-<!--      (click)="onSelectItem(item)"  if I want the card will be clicked-->
-<div *ngFor="let item of data; let i = index" 
-     [class.selected]="i === selectedIndex">
-     <div class="card">
-      <ng-container *ngFor="let key of dataKeys">
-        <div class="field">
-          <span class="field-label">{{ key }}: </span>
-          <ng-container [ngSwitch]="schema.items.properties[key].type">
-            <a *ngSwitchCase="'email'" href="mailto:{{ item[key] }}">{{ item[key] }}</a>
-            <a *ngSwitchCase="'link'" href="{{ item[key] }}" target="_blank">{{ item[key] }}</a>
-            <span *ngSwitchCase="'phone'">{{ item[key] }} ☎️</span>
-            <img *ngSwitchCase="'thumbnailUrl'" [src]="item[key]" [alt]="item.title" class="photo-thumbnail" />
-            <span *ngSwitchDefault>{{ item[key] }}</span>
-            <ng-container *ngSwitchCase="'object'">
-              <ng-container *ngIf="key === 'address'">
-             <!-- put YOUR_API_KEY with your google api key to show the map box -->
-              <!-- <iframe
-                width="300"
-                height="200"
-                frameborder="0" style="border:0"
-                src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q={{ restaurant.location.lat }},{{ restaurant.location.lng }}"
-                allowfullscreen>
-              </iframe> -->
-                <a href="https://www.google.com/maps/search/?api=1&query={{ item[key].geo.lat }},{{ item[key].geo.lng }}" target="_blank">Map</a>
+  <!--      (click)="onSelectItem(item)" if you want the card will be clickable-->
+  <div *ngFor="let item of data; let i = index">
+      <div class="card" [class.selected]="i === selectedIndex">
+        <ng-container *ngFor="let key of dataKeys">
+          <div class="field">
+            <span class="field-label">{{ key }}: </span>
+            <ng-container [ngSwitch]="schema.items.properties[key].type">
+              <a *ngSwitchCase="'email'" href="mailto:{{ item[key] }}">{{ item[key] }}</a>
+              <a *ngSwitchCase="'link'" href="{{ item[key] }}" target="_blank">{{ item[key] }}</a>
+              <span *ngSwitchCase="'phone'">{{ item[key] }} ☎️</span>
+              <img *ngSwitchCase="'thumbnailUrl'" [src]="item[key]" [alt]="item.title" class="photo-thumbnail" />
+              <span *ngSwitchDefault>{{ item[key] }}</span>
+              <ng-container *ngSwitchCase="'object'">
+                <ng-container *ngIf="key === 'address'">
+              <!-- put YOUR_API_KEY with your google api key to show the map box -->
+                <!-- <iframe
+                  width="300"
+                  height="200"
+                  frameborder="0" style="border:0"
+                  src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q={{ restaurant.location.lat }},{{ restaurant.location.lng }}"
+                  allowfullscreen>
+                </iframe> -->
+                  <a href="https://www.google.com/maps/search/?api=1&query={{ item[key].geo.lat }},{{ item[key].geo.lng }}" target="_blank">Map</a>
+                </ng-container>
               </ng-container>
+              <div *ngSwitchCase="'array'">
+                <ng-container *ngIf="key === 'favoriteRestaurants'">
+                  <div *ngFor="let restaurant of item[key]">
+                    {{ restaurant.name }}
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ restaurant.location.lat }},{{ restaurant.location.lng }}" target="_blank">Location</a>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="key === 'otherPhones'">
+                  <span *ngFor="let phone of item[key]; let last = last">
+                    {{ phone }} ☎️<span *ngIf="!last">, <br/></span>
+                  </span>
+                </ng-container>
+              </div>
             </ng-container>
-            <div *ngSwitchCase="'array'">
-              <ng-container *ngIf="key === 'favoriteRestaurants'">
-                <div *ngFor="let restaurant of item[key]">
-                  {{ restaurant.name }}
-                  <a href="https://www.google.com/maps/search/?api=1&query={{ restaurant.location.lat }},{{ restaurant.location.lng }}" target="_blank">Location</a>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="key === 'otherPhones'">
-                <span *ngFor="let phone of item[key]; let last = last">
-                  {{ phone }} ☎️<span *ngIf="!last">, <br/></span>
-                </span>
-              </ng-container>
-            </div>
-          </ng-container>
-        </div>
-      </ng-container>
-    </div>
+          </div>
+        </ng-container>
+      </div>
+  </div>
 </div>
